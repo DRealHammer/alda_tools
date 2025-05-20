@@ -46,8 +46,8 @@ def fuzzy_match(main_files, sec_files):
             pass
 
     print(f'=> Found {len(associations)} connections and added them')
-    print(f'=> Found {len(unmatched_main) if len(unmatched_main) > 0 else 'no'} primary loose ends')
-    print(f'=> Found {len(unmatched_sec) if len(unmatched_sec) > 0 else 'no'} secondary loose ends')
+    print(f'=> Found {len(unmatched_main) if len(unmatched_main) > 0 else "no"} primary loose ends')
+    print(f'=> Found {len(unmatched_sec) if len(unmatched_sec) > 0 else "no"} secondary loose ends')
 
     if len(unmatched_sec) > 0 and len(unmatched_main) > 0:
         print('WARNING: Not all submissions could be matched. As there are possible matches left, check the respective folders and manually match if desired')
