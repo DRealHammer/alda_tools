@@ -1,6 +1,5 @@
 from os import listdir, chdir, mkdir, rename
 from argparse import ArgumentParser
-from itertools import zip_longest
 
 # match as good as possible
 # assume a 0/1 to 0/1 relation: you can submit a sec_file but not a main_file
@@ -28,7 +27,7 @@ def fuzzy_match(main_files, sec_files):
         for member in team:
 
             # go through every possible team
-            for sec_team, sec_file in sec_teams:
+            for sec_team, sec_file in unmatched_sec:
 
                 # member is in a secondary team as well -> this is the corresponding team
                 if member in sec_team:
@@ -53,8 +52,14 @@ def fuzzy_match(main_files, sec_files):
         print('WARNING: Not all submissions could be matched. As there are possible matches left, check the respective folders and manually match if desired')
         print('WARNING: Following submissions could not be matched:')
 
-        for t1, t2 in zip_longest(unmatched_main, unmatched_sec):
-            print(f'\t{t1[1]}\t{t2[1]}')
+        if len(unmatched_main) > 0:
+            print('Primary Submissions:')
+            for t in unmatched_main:
+                print(f'\t{t[1]}')
+        if len(unmatched_sec) > 0:
+            print('Secondary Submissions:')
+            for t in unmatched_sec:
+                print(f'\t{t[1]}')
     for team, fn in unmatched_main:
         associations.append((fn, None))
     for team, fn in unmatched_sec:
