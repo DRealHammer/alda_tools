@@ -6,11 +6,13 @@ work_dir=$(pwd)
 
 # process every folder
 processed_folders=0
-for subdir in $(ls -d */ -1 2> /dev/zero)
+for subdir in */
 do
-
+	
+	#echo $subdir that we enter
 	# go in the folder
 	cd $subdir
+	#echo current folder: $subdir
 
 	# unzip every zip file and remove the zip
 	
@@ -27,15 +29,28 @@ do
 		fi
 	done
 
-	
+	#echo now working on the folders inside the directory
+
 	# go in every unpacked folder and move the files in the subdir folder
-	for submission in $(ls -d */ -1 2> /dev/zero)
+	for submission in */
 	do
-		# sanity check bc students use spaces in the folder names
-		if [[ -d $submission ]]
+		
+		#echo checking if $submission exists in the folder
+		#echo files:
+		#ls
+		#echo ----
+
+		if [[ "$submission" == /* ]]
 		then
-			mv $submission/* .
-			rm -r $submission
+			continue
+		fi
+
+		# sanity check bc students use spaces in the folder names
+		if [[ -d "$submission" ]]
+		then
+			#echo "\t" $submission that we enter 
+			mv "$submission"/* .
+			rm -r "$submission"
 		fi
 	done
 
