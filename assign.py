@@ -1,6 +1,12 @@
 from os import listdir, chdir, mkdir, rename
 from argparse import ArgumentParser
 
+def get_submission_names(filename):
+    team = filename.split('-20')[0]
+    names = team.split('__')
+
+    return names
+
 # match as good as possible
 # assume a 0/1 to 0/1 relation: you can submit a sec_file but not a main_file
 # you can also submit both
@@ -72,14 +78,17 @@ parser = ArgumentParser(
     description='Splits up the number of files and directories into 4 different directories as evenly as possible. For safety reasons the directory needs to be provided.',
     )
 
-parser.add_argument('submissions')
-parser.add_argument('-f', '--feedback_dir')
-parser.add_argument('-n', '--number', default=4)
-parser.add_argument('-o', '--output', default='tutor_assignments')
+parser.add_argument('submissions', help='Main Folder of the submission to split up')
+parser.add_argument('-f', '--feedback_dir', help='Optional Folder of feedback for every main submission, will be fuzzy matched by Mampf Names')
+parser.add_argument('-n', '--number', default=4, help="Number of Tutors the submissions will be split for")
+parser.add_argument('-o', '--output', default='tutor_assignments', help="Foldername of the final destination of the submissions")
+parser.add_argument('-c', action='store_true', help="Optional CSV of the names for every tutor of this assignment")
 
 args = parser.parse_args()
 
-print(args)
+#print(args)
+
+create_csv = args.c
 
 sub_dir = args.submissions
 feedback_dir = args.feedback_dir
@@ -166,3 +175,15 @@ for n in num_per_tutor:
 for folder, tutor_assignments in zip(folder_names, assignment):
     for submission in tutor_assignments:
         rename(submission, f'{folder}/{submission}')
+
+
+if create_csv:
+    with open("assignment.csv", '+w') as file:
+
+        file.write("Tutor,Student\n")
+        for folder, tutor_assignments in zip(folder_names, assignment):
+            for submission in tutor_assignments:
+                names = get_submission_names(submission)
+
+                for name in names:
+                    file.write(f'{folder},{name}\n')

@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# The script will run in the provided path, go in every folder and unpack it
+# and tries to flatten everything as much as possible in two layers
+
 # go into the working dir
 cd $1
 work_dir=$(pwd)
